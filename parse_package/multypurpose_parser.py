@@ -3,7 +3,7 @@ import json
 from bs4 import BeautifulSoup
 import cfscrape
 import requests
-from Parsers.parse_package.user_agent import ExtendedUserAgent
+from parse_package.user_agent import ExtendedUserAgent
 import undetected_chromedriver
 from selenium import webdriver
 from selenium.common import WebDriverException
@@ -264,7 +264,7 @@ class ScrapSession:
             для ботов.
         """
         if proxies:
-            from proxy import protocol, ip, port
+            from parse_package.proxy import protocol, ip, port
             _proxies = {
                 f'{protocol}': f'{ip}:{port}'
             }
