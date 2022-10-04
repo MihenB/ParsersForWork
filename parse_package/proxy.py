@@ -1,4 +1,4 @@
-protocol = 'https'
+protocol = 'http'
 login = 'A8qRAN'
 password = 'qx6CEk'
 ip = '104.227.102.174'
