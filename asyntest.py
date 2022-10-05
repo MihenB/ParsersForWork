@@ -22,8 +22,8 @@ async def get(num, session: CloudflareScraper, file):
         'pg': str(num),
     }
     # session = cfscrape.create_scraper(session)
-    # resp = await session.get('https://kompromat1.pro/articles', params=params, cookies=cookies, headers=headers)
-    resp = await session.get('https://google.com', headers=headers)
+    resp = await session.get('https://kompromat1.pro/articles', params=params, cookies=cookies, headers=headers)
+    # resp = await session.get('https://google.com', headers=headers)
     resp = BeautifulSoup(await resp.text(), 'lxml')
     cards = resp.find_all('a', class_='articles_title')
     print(num)

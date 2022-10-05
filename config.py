@@ -1,5 +1,3 @@
-import requests
-
 cookies = {
     '__ddg1_': 'poQt5G5NWfNf4cdAWPxS',
     '_ga': 'GA1.2.356178839.1664977903',
@@ -31,4 +29,4 @@ params = {
     'pg': '1',
 }
 
-response = requests.get('https://kompromat1.pro/articles', params=params, cookies=cookies, headers=headers)
+url = 'https://kompromat1.pro/articles'
