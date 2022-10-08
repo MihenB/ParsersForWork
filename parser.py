@@ -4,17 +4,19 @@ link_root = 'https://kompromat1.pro'
 
 
 def get_links():
-    for num_of_page in range(10):
-        session = ScrapSession()
-        params = {
-            'pg': str(num_of_page),
-        }
-        res = session.get('https://kompromat1.pro/articles', params=params, cookies=cookies, headers=headers
-                          , proxies=False).soup
-        cards = res.find_all('a', class_='articles_title')
-        for card in cards:
-            link = card.get('href')
-            print(link_root + link)
+    with open('links1.txt', 'w') as file:
+        for num_of_page in range(50, 100):
+            session = ScrapSession()
+            params = {
+                'pg': str(num_of_page),
+            }
+            res = session.get('https://kompromat1.pro/articles', params=params, cookies=cookies, headers=headers
+                              , proxies=True, secured=True).soup
+            cards = res.find_all('a', class_='articles_title')
+            for card in cards:
+                link = card.get('href')
+                file.write(f'{link_root}{link}\n')
+            print(f'Page {num_of_page}')
 
 
 def main():
