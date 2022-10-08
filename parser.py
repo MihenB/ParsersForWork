@@ -4,8 +4,8 @@ link_root = 'https://kompromat1.pro'
 
 
 def get_links():
-    with open('links1.txt', 'w') as file:
-        for num_of_page in range(50, 100):
+    with open('links1.txt', 'a') as file:
+        for num_of_page in range(100, 200):
             session = ScrapSession()
             params = {
                 'pg': str(num_of_page),
