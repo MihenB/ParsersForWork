@@ -1,21 +1,24 @@
-from parse_package.multypurpose_parser import ScrapSession
-from config import cookies, headers
-link_root = 'https://kompromat1.pro'
+import requests
+from bs4 import BeautifulSoup
+from config.request_config import cookies, headers, url
 
 
 def get_links():
     with open('links1.txt', 'a') as file:
         for num_of_page in range(100, 200):
-            session = ScrapSession()
+            session = requests.Session()
             params = {
                 'pg': str(num_of_page),
             }
-            res = session.get('https://kompromat1.pro/articles', params=params, cookies=cookies, headers=headers
-                              , proxies=True, secured=True).soup
+            res = session.get(url=url,
+                              params=params,
+                              cookies=cookies,
+                              headers=headers).text
+            res = BeautifulSoup(res, 'lxml')
             cards = res.find_all('a', class_='articles_title')
             for card in cards:
                 link = card.get('href')
-                file.write(f'{link_root}{link}\n')
+                file.write(f'{url}{link}\n')
             print(f'Page {num_of_page}')
 
 

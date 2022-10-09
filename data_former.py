@@ -1,5 +1,4 @@
-from parse_package.multypurpose_parser import ScrapSession
-from config import cookies, headers
+from config.request_config import cookies, headers
 import requests
 from bs4 import BeautifulSoup
 import cfscrape
