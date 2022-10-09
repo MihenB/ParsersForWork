@@ -34,5 +34,5 @@ def parse_missed_data():
 
 
 if __name__ == '__main__':
-    # print((check_missing_data(10, True)))
-    parse_missed_data()
+    print((check_missing_data(10, True)))
+    # parse_missed_data()
