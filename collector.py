@@ -1,9 +1,7 @@
 from parse_package.multypurpose_parser import ScrapSession
-from config import cookies, headers
-import requests
-from bs4 import BeautifulSoup
-import cfscrape
 import json
+from config import cookies, headers
+
 
 proxy = {
     'protocol': 'https',
@@ -49,46 +47,37 @@ def write_to_json(data):
         file.write(json_data)
 
 
-def get_info_from_site(url, session, photo_path, count):
-    response = session.get(url=url, cookies=cookies, headers=headers, proxies=proxy)
-    soup = BeautifulSoup(response.text, 'lxml')
+def get_info_from_site(soup, primary_key):
     title = soup.find('h1').text
-    photo_link = soup.find('img').get('src')
-    print(photo_link)
     text = format_text(soup.find('div', class_='articles_one').text.strip())
-    picture = session.get(url=photo_link, headers=headers, cookies=cookies, proxies=proxy)
     tags = soup.find_all('a', class_='article-tag')
     names_of_tags = ''
     date = soup.find('div', class_='img_div').text.replace('\n', '').split('г.')[0].split(' ')
     date = f'{date[1]}.{get_number_of_month(date[2])}.{date[3]}'
+    photos_links_soup = soup.find_all('img')
+    photos_links = []
+    for photo_link in photos_links_soup:
+        if 'logo?' not in photo_link.get('src') and 'https' in photo_link.get('src'):
+            photos_links.append(photo_link.get('src'))
     for tag in tags:
         names_of_tags += '|' + tag.get('href')
     names_of_tags = format_tags(names_of_tags)
-    with open(f'{photo_path}/{count}.jpg', "wb") as file:
-        file.write(picture.content)
     data = {
         'title': title,
-        'photo_path': f'{photo_path}/{count}.jpg',
+        'photos_links': photos_links,
         'text': text,
         'tags': names_of_tags,
-        'date': date
+        'date': date,
+        'primary_key': primary_key
     }
     return data
 
 
 def main():
-    with open('links1.txt', 'r', encoding='UTF-8') as file:
-        count = 0
-        for link in file.readlines():
-            session = cfscrape.create_scraper(requests.session())
-            data = get_info_from_site(link, session, 'photos1', count)
-            count += 1
-            print(data)
-            write_to_json(data)
-            #print(data.get('text'))
+    session = ScrapSession()
+    soup = session.get('https://kompromat1.pro/articles/211371-kak_rudn_zarabatyvaet_na_rybalke', headers=headers, cookies=cookies, proxies=True).soup
+    print(get_info_from_site(soup, 211371))
 
 
 if __name__ == '__main__':
-    # main()
-    session = cfscrape.create_scraper(requests.session())
-    print(get_info_from_site('https://kompromat1.pro/articles/211371-kak_rudn_zarabatyvaet_na_rybalke', session, 'photos1', 2323))
+    main()
