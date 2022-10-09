@@ -3,6 +3,7 @@ from config import cookies, headers
 import requests
 from bs4 import BeautifulSoup
 import cfscrape
+import json
 
 proxy = {
     'protocol': 'https',
@@ -36,6 +37,12 @@ def format_tags(tags):
 def format_text(text):
     text = text.split('\n\n\n\n\n\n\n\n')[1]
     return text
+
+
+def write_to_json(data):
+    json_data = json.dumps(data, indent=4, ensure_ascii=False)
+    with open('result_data.json', 'a') as file:
+        file.write(json_data)
 
 
 def get_info_from_site(url, session, photo_path, count):
@@ -72,6 +79,7 @@ def main():
             data = get_info_from_site(link, session, 'photos1', count)
             count += 1
             print(data)
+            write_to_json(data)
             #print(data.get('text'))
 
 
