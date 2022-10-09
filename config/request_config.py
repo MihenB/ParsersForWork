@@ -10,8 +10,6 @@ headers = {
     'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
     'accept-language': 'ru-RU,ru;q=0.9',
     'cache-control': 'no-cache',
-    # Requests sorts cookies= alphabetically
-    # 'cookie': '__ddg1_=poQt5G5NWfNf4cdAWPxS; _ga=GA1.2.356178839.1664977903; _gid=GA1.2.262483778.1664977903; _gat=1',
     'pragma': 'no-cache',
     'referer': 'https://kompromat1.pro/articles',
     'sec-ch-ua': '"Google Chrome";v="105", "Not)A;Brand";v="8", "Chromium";v="105"',

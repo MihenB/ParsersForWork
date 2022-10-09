@@ -1,8 +1,6 @@
 # from parse_package.multypurpose_parser import ScrapSession
-from config import cookies, headers
+from config.request_config import cookies, headers
 import asyncio
-import cfscrape
-import aiohttp
 from bs4 import BeautifulSoup
 import time
 from aiocfscrape import CloudflareScraper
