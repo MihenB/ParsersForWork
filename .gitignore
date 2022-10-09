@@ -3,3 +3,4 @@ photos
 venv
 *.txt
 *.xml
+__pycache__
