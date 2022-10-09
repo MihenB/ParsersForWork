@@ -4,3 +4,4 @@ venv
 *.txt
 *.xml
 __pycache__
+*.iml
