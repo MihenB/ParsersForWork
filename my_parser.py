@@ -1,12 +1,14 @@
-import os
 import random
 import threading
 import time
+import mysql
 from bs4 import BeautifulSoup
 from crawler import TorCrawler
 from user_agent import ExtendedUserAgent
 from config.tor_config import TOR_PORT_CONFIG
 from config.request_config import headers, params, url
+from db_driver import DBControl
+from config.db_config import sql
 
 
 def read_url_list(positions):
@@ -30,13 +32,17 @@ def log_print(cur_num):
     print(f'Current page: {cur_num}')
 
 
-def tor_data_access(page_num_list, filename, crawler_conf: dict):
+def tor_data_access(page_num_list, db_driver, crawler_conf: dict):
     current_pos = 0
+    commit_period = 2
     crawler = TorCrawler(ctrl_port=crawler_conf['Control'],
                          socks_port=crawler_conf['Socks'])
     ua = ExtendedUserAgent()
+    link_body = 'https://kompromat1.pro'
     _headers = headers.copy()
     _params = params.copy()
+
+    connection, cursor = db_driver.create_connection()
 
     while current_pos < len(page_num_list):
         current_page = page_num_list[current_pos]
@@ -51,14 +57,14 @@ def tor_data_access(page_num_list, filename, crawler_conf: dict):
                 break
             except Exception as ex:
                 print(f'[ERROR] {ex}\nTrying again...')
-        log_print(f'Page: {current_page}')
+        log_print(current_page)
         try:
             if response.status_code == 200:
                 soup = BeautifulSoup(response.text, 'lxml')
                 cards = soup.find_all('a', class_='articles_title')
-                for card in cards:
-                    link = card.get('href')
-                    print(f'Success! {link}')
+                links = [link_body + card.get('href') for card in cards]
+                current_pos += 1
+                print(f'Links on page: {len(links)}')
             elif response.status_code == 403:
                 safe_crawler_rotate(crawler)
                 time.sleep(random.random())
@@ -66,14 +72,27 @@ def tor_data_access(page_num_list, filename, crawler_conf: dict):
             else:
                 print(response.text)
                 continue
+            for link in links:
+                cursor.execute(sql['update_table_links_with_pages'], (link, current_page))
+            if current_pos % commit_period == 1:
+                print(f'[INFO] Committed into mysql!')
+                try:
+                    connection.commit()
+                except mysql.connector.errors.IntegrityError:
+
         except AttributeError:
             print('Response is still None, page skipped!')
+            current_pos += 1
+
+    db_driver.commit_and_close_connection(connection=connection, cursor=cursor)
 
 
 def parse_data(boardings):
+    db_driver = DBControl()
+
     threads = [threading.Thread(target=tor_data_access,
                                 args=(page_num_list,
-                                      os.path.join('written_data', f'THREAD_{i}.json'),
+                                      db_driver,
                                       TOR_PORT_CONFIG[i])
                                 ) for i, page_num_list in enumerate(boardings)]
 
@@ -83,6 +102,8 @@ def parse_data(boardings):
 
     for thread in threads:
         thread.join()
+
+    # db_driver.close_connections_pool()
 
 
 if __name__ == '__main__':

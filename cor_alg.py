@@ -1,5 +1,9 @@
-from par import parse_data
+import re
+import requests
+from bs4 import BeautifulSoup
+from my_parser import parse_data
 from config.tor_config import THREADS_COUNT
+from config.request_config import url, headers
 
 
 def request_to_db():
@@ -23,8 +27,9 @@ def _get_data_slices(len_broken_num):
 
 
 def _get_boardings():
-    last_page = 10  # requests.get()
-    broken_nums = check_missing_data(last_page, show_list=True)
+    soup = BeautifulSoup(requests.get(url=url, headers=headers).text, 'lxml')
+    last_page = int(re.search(r'(\d+)', soup.find(class_='pagenate').text)[0])
+    broken_nums = check_missing_data(last_page)
     data_slices = _get_data_slices(len(broken_nums))
     return [broken_nums[i:j] for i, j in data_slices]
 
@@ -34,5 +39,7 @@ def parse_missed_data():
 
 
 if __name__ == '__main__':
-    print((check_missing_data(10, True)))
-    # parse_missed_data()
+    # soup = BeautifulSoup(requests.get(url=url, headers=headers).text, 'lxml')
+    # last_page = int(re.search(r'(\d+)', soup.find(class_='pagenate').text)[0])
+    # print((check_missing_data(last_page=last_page)))
+    parse_missed_data()
