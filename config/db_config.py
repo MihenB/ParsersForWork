@@ -6,7 +6,7 @@ db_config = {
 }
 
 sql = {
-    'update_table_links_with_pages': """INSERT INTO test.links_with_pages
+    'update_table_links_with_pages': """INSERT IGNORE INTO test.links_with_pages
                                         (link, page_num)
                                         VALUES (%s, %s);
                                      """

@@ -1,7 +1,7 @@
 import random
 import threading
 import time
-import mysql
+import mysql.connector
 from bs4 import BeautifulSoup
 from crawler import TorCrawler
 from user_agent import ExtendedUserAgent
@@ -79,6 +79,7 @@ def tor_data_access(page_num_list, db_driver, crawler_conf: dict):
                 try:
                     connection.commit()
                 except mysql.connector.errors.IntegrityError:
+                    pass
 
         except AttributeError:
             print('Response is still None, page skipped!')
