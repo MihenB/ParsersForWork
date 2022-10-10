@@ -1,0 +1,1 @@
+UPDATE links_with_pages SET link = '<value1>', page_num = 5 WHERE link = '1';
