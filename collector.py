@@ -76,7 +76,7 @@ def get_info_from_site(soup, primary_key):
 def main():
     session = ScrapSession()
     soup = session.get('https://kompromat1.pro/articles/211371-kak_rudn_zarabatyvaet_na_rybalke', headers=headers, cookies=cookies, proxies=True).soup
-    print(get_info_from_site(soup, 211371))
+    print(get_info_from_site(soup, 211371).get('text'))
 
 
 if __name__ == '__main__':
