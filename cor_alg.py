@@ -11,7 +11,11 @@ from db_driver import DBControl
 def request_to_db():
     db_control = DBControl()
     connection, cursor = db_control.create_single_connection()
-    parsed_nums = cursor.execute(sql['check_collected_pages']).fetchall()
+    parsed_nums = cursor.execute(sql['check_collected_pages'])
+    if parsed_nums:
+        parsed_nums = parsed_nums.fetchall()
+    else:
+        parsed_nums = [None, ]
     print(parsed_nums)
     db_control.close_single_connection()
     return parsed_nums
