@@ -10,7 +10,5 @@ sql = {
                                         (page_num, link)
                                         VALUES (%s, %s);
                                      """,
-    'check_collected_pages': """
-    select page_num from rucriminal.links_with_pages;
-    """
+    'check_collected_pages': """select distinct page_num from rucriminal.links_with_pages;"""
 }

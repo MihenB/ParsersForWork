@@ -1,19 +1,9 @@
-proxy = {
-    'protocol': 'https',
-    'login': 'A8qRAN',
-    'password': 'qx6CEk',
-    'ip': '104.227.102.174',
-    'port': '9400'
-}
-
-proxy = {
-    proxy['protocol']: f'{proxy["ip"]}:{proxy["port"]}'
-}
+import json
 
 
 def get_number_of_month(month):
     months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
-             'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря']
+              'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря']
     if month in months:
         number_of_month = months.index(month) + 1
         if number_of_month < 10:
@@ -69,10 +59,6 @@ def get_info_from_site(soup, primary_key):
 
 
 def main():
-    # session = ScrapSession()
-    # soup = session.get('https://kompromat1.pro/articles/211371-kak_rudn_zarabatyvaet_na_rybalke',
-    # headers=headers, cookies=cookies, proxies=True).soup
-    # print(get_info_from_site(soup, 211371))
     pass
 
 
