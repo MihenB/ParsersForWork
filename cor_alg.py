@@ -4,10 +4,17 @@ from bs4 import BeautifulSoup
 from my_parser import parse_data
 from config.tor_config import THREADS_COUNT
 from config.request_config import url, headers
+from config.db_config import sql
+from db_driver import DBControl
 
 
 def request_to_db():
-    return [None, ]
+    db_control = DBControl()
+    connection, cursor = db_control.create_single_connection()
+    parsed_nums = cursor.execute(sql['check_collected_pages']).fetchall()
+    print(parsed_nums)
+    db_control.close_single_connection()
+    return parsed_nums
 
 
 def check_missing_data(last_page: int, show_list=False):
