@@ -1,8 +1,8 @@
 db_config = {
-    'host': '192.168.43.48',
-    'passwd': '00000000qQ!',
-    'user': 'test',
-    'db': 'test'
+    'host': '127.0.0.1',
+    'passwd': '1111rucrim',
+    'user': 'rucriminal',
+    'db': 'rucriminal'
 }
 
 sql = {
