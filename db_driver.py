@@ -22,7 +22,10 @@ class DBControl:
         return self.connect, self.cursor
 
     def close_single_connection(self):
-        self.connect.commit()
+        try:
+            self.connect.commit()
+        except mysql.connector.errors.InternalError:
+            print('[ERROR] Empty commit!')
         self.cursor.close()
         self.connect.close()
 
