@@ -47,7 +47,4 @@ def parse_missed_data():
 
 
 if __name__ == '__main__':
-    # soup = BeautifulSoup(requests.get(url=url, headers=headers).text, 'lxml')
-    # last_page = int(re.search(r'(\d+)', soup.find(class_='pagenate').text)[0])
-    # print((check_missing_data(last_page=last_page)))
     parse_missed_data()
