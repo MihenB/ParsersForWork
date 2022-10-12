@@ -17,7 +17,7 @@ def request_to_db():
     else:
         parsed_nums = [None, ]
     print(parsed_nums)
-    db_control.close_single_connection()
+    # db_control.close_single_connection()
     return parsed_nums
 
 
