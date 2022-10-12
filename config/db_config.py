@@ -6,8 +6,11 @@ db_config = {
 }
 
 sql = {
-    'update_table_links_with_pages': """INSERT IGNORE INTO test.links_with_pages
-                                        (link, page_num)
+    'update_table_links_with_pages': """INSERT IGNORE INTO news_parser_db.pages
+                                        (page, link)
                                         VALUES (%s, %s);
-                                     """
+                                     """,
+    'check_collected_pages': """
+    select 
+    """
 }

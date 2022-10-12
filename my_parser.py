@@ -73,7 +73,7 @@ def tor_data_access(page_num_list, db_driver, crawler_conf: dict):
                 print(response.text)
                 continue
             for link in links:
-                cursor.execute(sql['update_table_links_with_pages'], (link, current_page))
+                cursor.execute(sql['update_table_links_with_pages'], (current_page, link))
             if current_pos % commit_period == 1:
                 print(f'[INFO] Committed into mysql!')
                 try:
