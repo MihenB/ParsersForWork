@@ -14,7 +14,6 @@ def request_to_db():
     cursor.execute(sql['check_collected_pages'])
     parsed_nums = cursor.fetchall()
     parsed_nums = [i[0] for i in parsed_nums]
-    print(parsed_nums)
     # db_control.close_single_connection()
     return parsed_nums
 
@@ -38,7 +37,7 @@ def _get_data_slices(len_broken_num):
 def _get_boardings():
     soup = BeautifulSoup(requests.get(url=url, headers=headers).text, 'lxml')
     last_page = int(re.search(r'(\d+)', soup.find(class_='pagenate').text)[0])
-    broken_nums = check_missing_data(last_page)
+    broken_nums = check_missing_data(last_page, show_list=True)
     data_slices = _get_data_slices(len(broken_nums))
     return [broken_nums[i:j] for i, j in data_slices]
 
