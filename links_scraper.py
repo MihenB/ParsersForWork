@@ -22,7 +22,10 @@ def format_tags(tags):
 
 
 def format_text(text):
-    text = text.split('\n\n\n\n\n\n\n\n')[1]
+    try:
+        text = text.split('\n\n\n\n\n\n\n\n')[1]
+    except IndexError:
+        text = text
     return text
 
 
