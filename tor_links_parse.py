@@ -14,7 +14,7 @@ def log_print(cur_link):
     print(f'[INFO] Current link: {cur_link}')
 
 
-def tor_pages_crawler(links_list, db_driver, crawler_conf: dict):
+def tor_links_crawler(links_list, db_driver, crawler_conf: dict):
     current_pos = 0
     commit_period = 10
     crawler = TorCrawler(ctrl_port=crawler_conf['Control'],

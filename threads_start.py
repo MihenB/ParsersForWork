@@ -3,7 +3,7 @@ import threading
 import time
 from config.tor_config import TOR_PORT_CONFIG
 from db_driver import DBControl
-from tor_pages_parse import tor_pages_crawler
+from tor_links_parse import tor_links_crawler
 
 
 def parse_data(boardings):
@@ -15,11 +15,11 @@ def parse_data(boardings):
     #                                   TOR_PORT_CONFIG[i])
     #                             ) for i, page_num_list in enumerate(boardings)]
 
-    threads = [threading.Thread(target=tor_pages_crawler,
-                                args=(page_num_list,
+    threads = [threading.Thread(target=tor_links_crawler,
+                                args=(links_list,
                                       db_driver,
                                       TOR_PORT_CONFIG[i])
-                                ) for i, page_num_list in enumerate(boardings)]
+                                ) for i, links_list in enumerate(boardings)]
 
     for thread in threads:
         thread.start()
