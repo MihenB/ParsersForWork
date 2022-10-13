@@ -1,11 +1,3 @@
-import random
-import threading
-import time
-from config.tor_config import TOR_PORT_CONFIG
-from db_driver import DBControl
-from tor_links_parse import tor_links_crawler
-
-
 def parse_data(boardings):
     db_driver = DBControl()
 
@@ -29,6 +21,14 @@ def parse_data(boardings):
         thread.join()
 
     # db_driver.close_connections_pool()
+
+
+import random
+import threading
+import time
+from config.tor_config import TOR_PORT_CONFIG
+from db_driver import DBControl
+from tor_links_parse import tor_links_crawler
 
 
 if __name__ == '__main__':
