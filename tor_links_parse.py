@@ -49,7 +49,7 @@ def tor_links_crawler(links_list, db_driver, crawler_conf: dict):
                 time.sleep(random.random())
                 continue
             else:
-                print(response.text)
+                print(f'[ERROR] Status code: {response.status_code})
                 continue
 
             cursor.execute(sql_requests_dict['insert_data_from_link'],
