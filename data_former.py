@@ -50,13 +50,13 @@ def write_to_json(data):
 
 
 def get_info_from_site(url, session, photo_path, count):
-    response = session.get(url=url, cookies=cookies, headers=headers, proxies=proxy)
+    response = session.get(url=url, cookies=cookies, headers=headers)
     soup = BeautifulSoup(response.text, 'lxml')
     title = soup.find('h1').text
     photo_link = soup.find('img').get('src')
     print(photo_link)
     text = format_text(soup.find('div', class_='articles_one').text.strip())
-    picture = session.get(url=photo_link, headers=headers, cookies=cookies, proxies=proxy)
+    picture = session.get(url=photo_link, headers=headers, cookies=cookies)
     tags = soup.find_all('a', class_='article-tag')
     names_of_tags = ''
     date = soup.find('div', class_='img_div').text.replace('\n', '').split('г.')[0].split(' ')
