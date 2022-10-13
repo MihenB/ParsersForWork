@@ -30,7 +30,6 @@ from config.tor_config import TOR_PORT_CONFIG
 from db_driver import DBControl
 from tor_links_parse import tor_links_crawler
 
-
 if __name__ == '__main__':
     # Program starts from cor_alg!
     pass
