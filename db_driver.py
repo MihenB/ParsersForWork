@@ -11,7 +11,7 @@ class DBControl:
         self.connect = None
         self.cursor = None
 
-    def create_connection(self):
+    def get_connection_from_pool(self):
         connection = self.connections_pool.get_connection()
         cursor = connection.cursor()
         return connection, cursor

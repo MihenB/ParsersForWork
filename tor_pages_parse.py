@@ -1,38 +1,19 @@
 import random
-import threading
 import time
 import mysql.connector
 from bs4 import BeautifulSoup
+from config.db_config import sql_requests_dict
+from config.request_config import headers, params, url
 from crawler import TorCrawler
 from user_agent import ExtendedUserAgent
-from config.tor_config import TOR_PORT_CONFIG
-from config.request_config import headers, params, url
-from db_driver import DBControl
-from config.db_config import sql
-
-
-def read_url_list(positions):
-    with open('urls.txt', 'r', encoding='utf-8') as read_file:
-        all_lines = read_file.readlines()
-        return [(i, all_lines[i]) for i in range(len(all_lines)) if i in positions]
-
-
-def safe_crawler_rotate(crawler):
-    for _ in range(2):
-        try:
-            crawler.rotate()
-            break
-        except Exception as ex:
-            print(f'[ERROR] {ex}')
-            print('IP rotate failed, trying again...')
-            time.sleep(random.random() * 2)
+from crawler import safe_crawler_rotate
 
 
 def log_print(cur_num):
     print(f'Current page: {cur_num}')
 
 
-def tor_data_access(page_num_list, db_driver, crawler_conf: dict):
+def tor_pages_crawler(page_num_list, db_driver, crawler_conf: dict):
     current_pos = 0
     commit_period = 2
     crawler = TorCrawler(ctrl_port=crawler_conf['Control'],
@@ -42,7 +23,7 @@ def tor_data_access(page_num_list, db_driver, crawler_conf: dict):
     _headers = headers.copy()
     _params = params.copy()
 
-    connection, cursor = db_driver.create_connection()
+    connection, cursor = db_driver.get_connection_from_pool()
 
     while current_pos < len(page_num_list):
         current_page = page_num_list[current_pos]
@@ -73,7 +54,7 @@ def tor_data_access(page_num_list, db_driver, crawler_conf: dict):
                 print(response.text)
                 continue
             for link in links:
-                cursor.execute(sql['update_table_links_with_pages'], (current_page, link))
+                cursor.execute(sql_requests_dict['update_table_links_with_pages'], (current_page, link))
             if current_pos % commit_period == 1:
                 print(f'[INFO] Committed into mysql!')
                 try:
@@ -86,27 +67,3 @@ def tor_data_access(page_num_list, db_driver, crawler_conf: dict):
             current_pos += 1
 
     db_driver.commit_and_close_connection(connection=connection, cursor=cursor)
-
-
-def parse_data(boardings):
-    db_driver = DBControl()
-
-    threads = [threading.Thread(target=tor_data_access,
-                                args=(page_num_list,
-                                      db_driver,
-                                      TOR_PORT_CONFIG[i])
-                                ) for i, page_num_list in enumerate(boardings)]
-
-    for thread in threads:
-        thread.start()
-        time.sleep(random.random())
-
-    for thread in threads:
-        thread.join()
-
-    # db_driver.close_connections_pool()
-
-
-if __name__ == '__main__':
-    # Program starts from cor_alg!
-    pass

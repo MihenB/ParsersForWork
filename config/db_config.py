@@ -5,10 +5,12 @@ db_config = {
     'db': 'rucriminal'
 }
 
-sql = {
+sql_requests_dict = {
     'update_table_links_with_pages': """INSERT IGNORE INTO rucriminal.links_with_pages
                                         (page_num, link)
                                         VALUES (%s, %s);
                                      """,
-    'check_collected_pages': """select distinct page_num from rucriminal.links_with_pages;"""
+    'check_collected_pages': """select distinct page_num from rucriminal.links_with_pages;""",
+    'get_all_links': """select link from rucriminal.links_with_pages;""",
+    'check_collected_link_ids': """select ID from rucriminal.news;"""
 }

@@ -1,10 +1,23 @@
+import random
 import requests
 import time
 import os
 import cfscrape
+from bs4 import BeautifulSoup
 from stem import Signal
 from stem.control import Controller
 from stem.connection import authenticate_none, authenticate_password
+
+
+def safe_crawler_rotate(crawler):
+    for _ in range(2):
+        try:
+            crawler.rotate()
+            break
+        except Exception as ex:
+            print(f'[ERROR] {ex}')
+            print('IP rotate failed, trying again...')
+            time.sleep(random.random() * 2)
 
 
 class TorCrawler(object):
@@ -112,7 +125,7 @@ class TorCrawler(object):
                 break
 
     def get(self, url, headers=None, cookies=None, params=None) -> requests.Response:
-        """Return raw response from GET."""
+        """Return raw response from GET request."""
         response = self.session.get(url, headers=headers, cookies=cookies, params=params)
         self._updateCount()
         return response

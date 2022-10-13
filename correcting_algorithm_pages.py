@@ -1,17 +1,17 @@
 import re
 import requests
 from bs4 import BeautifulSoup
-from my_parser import parse_data
+from threads_start import parse_data
 from config.tor_config import THREADS_COUNT
 from config.request_config import url, headers
-from config.db_config import sql
+from config.db_config import sql_requests_dict
 from db_driver import DBControl
 
 
 def request_to_db():
     db_control = DBControl()
     connection, cursor = db_control.create_single_connection()
-    cursor.execute(sql['check_collected_pages'])
+    cursor.execute(sql_requests_dict['check_collected_pages'])
     parsed_nums = cursor.fetchall()
     parsed_nums = [i[0] for i in parsed_nums]
     # db_control.close_single_connection()
