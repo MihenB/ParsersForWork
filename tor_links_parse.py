@@ -52,7 +52,9 @@ def tor_links_crawler(links_list, db_driver, crawler_conf: dict):
                 print(response.text)
                 continue
 
-            cursor.execute(sql_requests_dict['YOUR_COMMAND'], (YOUR, ARGS))
+            cursor.execute(sql_requests_dict['YOUR_COMMAND'], (parsed_data.get('title'), parsed_data.get('text'),
+                                                               parsed_data.get('photo_path'), parsed_data.get('tags'),
+                                                               parsed_data.get('date'), parsed_data.get('primary_key')))
             if current_pos % commit_period == 1:
                 print(f'[INFO] Committed into mysql!')
                 connection.commit()
