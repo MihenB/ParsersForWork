@@ -8,6 +8,7 @@ from user_agent import ExtendedUserAgent
 from crawler import safe_crawler_rotate
 from links_scraper import get_info_from_site
 from correcting_algorithm_links import get_id_from_link
+import logging
 
 
 def log_print(cur_link):
@@ -22,6 +23,8 @@ def tor_links_crawler(links_list, db_driver, crawler_conf: dict):
     ua = ExtendedUserAgent()
     _headers = headers.copy()
 
+    logging.basicConfig(level=logging.INFO, filename="links_parse_logging.log", filemode="w",
+                        format="%(asctime)s %(levelname)s %(message)s")
     connection, cursor = db_driver.get_connection_from_pool()
 
     while current_pos < len(links_list):
@@ -48,8 +51,15 @@ def tor_links_crawler(links_list, db_driver, crawler_conf: dict):
                 safe_crawler_rotate(crawler)
                 time.sleep(random.random())
                 continue
+            elif response.status_code == 404:
+                print(f'[ERROR] Status code: 404, page not found! Going next page')
+                current_pos += 1
+                continue
             else:
-                print(response.text)
+                logging.warning(f"Page returned status code: {response.status_code}\n"
+                                f"Link: {current_link}")
+                print(f'[ERROR] Status code: {response.status_code}. Page skipped, see log file!')
+                current_pos += 1
                 continue
 
             cursor.execute(sql_requests_dict['insert_data_from_link'],
