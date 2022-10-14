@@ -44,10 +44,13 @@ def get_info_from_site(soup, primary_key):
     date = f'{date[1]}.{get_number_of_month(date[2])}.{date[3]}'
     photos_links_soup = soup.find_all('img')
     photos_links = ''
-    for photo_link in photos_links_soup:
-        if 'logo?' not in photo_link.get('src') and 'https' in photo_link.get('src'):
-            link_src = photo_link.get('src')
-            photos_links += f'|{link_src}'
+    try:
+        for photo_link in photos_links_soup:
+            if 'logo?' not in photo_link.get('src') and 'https' in photo_link.get('src'):
+                link_src = photo_link.get('src')
+                photos_links += f'|{link_src}'
+    except TypeError:
+        photos_links = ''
     for tag in tags:
         names_of_tags += '|' + tag.get('href')
     names_of_tags = format_tags(names_of_tags)
