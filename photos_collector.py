@@ -4,6 +4,7 @@ import asyncio
 import os
 from config.request_config import headers
 import logging
+from db_driver import DBControl
 
 main_path = '/news_photos'
 logging.basicConfig(level=logging.INFO, filename="links_parse_logging.log", filemode="w",
@@ -52,8 +53,10 @@ def collect(cursor):
 
 
 def main():
-    cursor = None
-    collect(cursor)
+    db_control = DBControl()
+    conn, cur = db_control.create_single_connection()
+    collect(cur)
+    db_control.close_single_connection()
 
 
 if __name__ == '__main__':
