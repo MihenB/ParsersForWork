@@ -1,34 +1,59 @@
 import requests
-test_list = [
-    '|34553|345354|35|34364',
-    '|345',
-    '|3465|3453'
-]
-test_list_titles = [
-    'first',
-    'second',
-    'bob'
-]
+from config.db_config import sql_requests_dict
+import asyncio
+import os
+from config.request_config import headers
+import logging
+
+main_path = '/news_photos'
+logging.basicConfig(level=logging.INFO, filename="links_parse_logging.log", filemode="w",
+                        format="%(asctime)s %(levelname)s %(message)s")
 
 
-def format_list_to_dict(list_of_links, list_of_titles):
-    result_dict = {}
-    for i in range(len(list_of_links)):
-        one_page_links = []
-        for link in list_of_links[i].split('|')[1::]:
-            one_page_links.append(link)
-        result_dict[list_of_titles[i]] = one_page_links
+def format_list_to_dict(driver):
+    cursor = driver.cursor()
+    cursor.execute(sql_requests_dict['select_id_and_photo_links'])
+    ids_and_links = cursor.fetchall()
+    result_dict = {
+        item[0]: item[1].split('|')[1::] for item in ids_and_links
+    }
     return result_dict
 
 
-def load_and_safe_picture(path, link, name):
-    with open(f'{path}/{name}', "wb") as file:
-        picture = requests.get(link)
-        file.write(picture.content)
+async def load_and_safe_picture(local_id, link_dict):
+    path = os.path.join(main_path, local_id)
+    try:
+        os.mkdir(path)
+    except FileExistsError:
+        pass
+    for num, link in enumerate(link_dict):
+        with open(os.path.join(path, str(num)), "wb") as file:
+            try:
+                picture = requests.get(link, headers=headers)
+            except Exception:
+                logging.exception(f'Link {link} is not available')
+                continue
+            try:
+                file.write(picture.content)
+            except AttributeError:
+                logging.exception(f'Links {link} content damaged')
+    print(f'[INFO] file(s) has written to {path}')
+
+
+async def run_tasks(collected_dict):
+    tasks = [asyncio.create_task(load_and_safe_picture(key, val))
+             for key, val in collected_dict.items()]
+    await asyncio.gather(*tasks)
+
+
+def collect(cursor):
+    collected_dict = format_list_to_dict(cursor)
+    asyncio.run(run_tasks(collected_dict))
 
 
 def main():
-    print(format_list_to_dict(test_list, test_list_titles))
+    cursor = None
+    collect(cursor)
 
 
 if __name__ == '__main__':
