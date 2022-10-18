@@ -21,7 +21,7 @@ def format_list_to_dict(cursor):
 
 
 async def load_and_safe_picture(local_id, link_dict):
-    path = os.path.join(main_path, local_id)
+    path = os.path.join(main_path, str(local_id))
     try:
         os.mkdir(path)
     except FileExistsError:
