@@ -11,8 +11,7 @@ logging.basicConfig(level=logging.INFO, filename="links_parse_logging.log", file
                         format="%(asctime)s %(levelname)s %(message)s")
 
 
-def format_list_to_dict(driver):
-    cursor = driver.cursor()
+def format_list_to_dict(cursor):
     cursor.execute(sql_requests_dict['select_id_and_photo_links'])
     ids_and_links = cursor.fetchall()
     result_dict = {
