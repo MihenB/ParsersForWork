@@ -21,6 +21,12 @@ def format_list_to_dict(list_of_links, list_of_titles):
     return result_dict
 
 
+def load_and_safe_picture(path, link, name):
+    with open(f'{path}/{name}', "wb") as file:
+        picture = requests.get(link)
+        file.write(picture.content)
+
+
 def main():
     print(format_list_to_dict(test_list, test_list_titles))
 
