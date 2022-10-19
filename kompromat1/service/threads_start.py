@@ -1,11 +1,19 @@
+import random
+import threading
+import time
+import logging
+from kompromat1.config.tor_config import TOR_PORT_CONFIG
+from kompromat1.service.db_driver import DBControl
+
+
 def parse_data(boardings):
+    from kompromat1.parsers.tor_photos_parse import tor_links_crawler
     db_driver = DBControl()
 
-    # threads = [threading.Thread(target=tor_pages_crawler,
-    #                             args=(page_num_list,
-    #                                   db_driver,
-    #                                   TOR_PORT_CONFIG[i])
-    #                             ) for i, page_num_list in enumerate(boardings)]
+    logging.basicConfig(level=logging.INFO,
+                        filename=f"links_parse_{threading.current_thread().name}.log",
+                        filemode="w",
+                        format="%(asctime)s %(levelname)s %(message)s")
 
     threads = [threading.Thread(target=tor_links_crawler,
                                 args=(links_list,
@@ -22,13 +30,6 @@ def parse_data(boardings):
 
     # db_driver.close_connections_pool()
 
-
-import random
-import threading
-import time
-from kompromat1.config.tor_config import TOR_PORT_CONFIG
-from kompromat1.service.db_driver import DBControl
-from kompromat1.parsers.tor_photos_parse import tor_links_crawler
 
 if __name__ == '__main__':
     # Program starts from cor_alg!

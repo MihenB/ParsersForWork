@@ -8,7 +8,9 @@ from stem.control import Controller
 from stem.connection import authenticate_none, authenticate_password
 
 
-def safe_crawler_rotate(crawler):
+def safe_crawler_rotate(crawler, headers=None, new_ua=None):
+    if headers and new_ua:
+        headers.update({'user-agent': new_ua})
     for _ in range(2):
         try:
             crawler.rotate()

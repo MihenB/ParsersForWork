@@ -1,6 +1,5 @@
 import os
 import logging
-import threading
 from kompromat1.config.db_config import sql_requests_dict
 from kompromat1.config.request_config import headers
 from kompromat1.service.user_agent import ExtendedUserAgent
@@ -16,11 +15,6 @@ def tor_links_crawler(ids_with_links_list, db_driver, crawler_conf: dict):
     ua = ExtendedUserAgent()
     _headers = headers.copy()
 
-    logging.basicConfig(level=logging.INFO,
-                        filename=f"links_parse_{threading.current_thread().name}.log",
-                        filemode="w",
-                        format="%(asctime)s %(levelname)s %(message)s")
-
     connection, cursor = db_driver.get_connection_from_pool()
 
     for current_pos in range(len(ids_with_links_list)):
@@ -31,7 +25,6 @@ def tor_links_crawler(ids_with_links_list, db_driver, crawler_conf: dict):
         response = None
 
         current_link_pos = 0
-        rotate_tries = 0
 
         while current_link_pos < len(current_links):
             current_link = current_links[current_link_pos]
@@ -49,14 +42,8 @@ def tor_links_crawler(ids_with_links_list, db_driver, crawler_conf: dict):
                     current_link_pos += 1
                     print(f'[INFO] Photo saved into {log_path}')
                 elif response.status_code in (403, 503):
-                    if rotate_tries < 3:
-                        print(f'[WARNING] Status code: {response.status_code}\n'
-                              f'Rotate try #{rotate_tries}')
-                        safe_crawler_rotate(crawler)
-                        rotate_tries += 1
-                    else:
-                        rotate_tries = 0
-                        current_link_pos += 1
+                    print(f'[WARNING] Status code: {response.status_code}')
+                    safe_crawler_rotate(crawler, headers=_headers, new_ua=ua.random_fresh_ua)
                 else:
                     logging.warning(f"Page returned status code: {response.status_code}\n"
                                     f"Link: {current_link}")

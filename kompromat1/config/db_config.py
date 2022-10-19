@@ -14,8 +14,8 @@ sql_requests_dict = {
     'get_all_links': """select link from rucriminal.links_with_pages;""",
     'check_collected_link_ids': """select ID from rucriminal.news;""",
     'insert_data_from_link': """INSERT IGNORE INTO rucriminal.news 
-    (title, text, photo_path, tags, date, ID, photos_links) 
-    VALUES (%s, %s, %s, %s, %s, %s, %s);""",
+                                (title, text, photo_path, tags, date, ID, photos_links) 
+                                VALUES (%s, %s, %s, %s, %s, %s, %s);""",
     'select_id_and_photo_links': """select id, photos_links from rucriminal.news;""",
     'insert_id_and_photo_path': """insert into rucriminal.photos_paths
                                    (id, path)
