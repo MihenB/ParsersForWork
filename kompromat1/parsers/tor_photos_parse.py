@@ -1,5 +1,7 @@
 import os
 import logging
+import random
+import time
 from kompromat1.config.db_config import sql_requests_dict
 from kompromat1.config.request_config import headers
 from kompromat1.service.user_agent import ExtendedUserAgent
@@ -63,5 +65,7 @@ def tor_links_crawler(ids_with_links_list, db_driver, crawler_conf: dict):
         if current_pos % commit_period == 1:
             print(f'[INFO] Committed into mysql!')
             connection.commit()
+
+        time.sleep((random.random() + 1) * 2)
 
     db_driver.commit_and_close_connection(connection=connection, cursor=cursor)
