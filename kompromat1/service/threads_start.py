@@ -26,8 +26,8 @@ def parse_data(boardings):
 import random
 import threading
 import time
-from config.tor_config import TOR_PORT_CONFIG
-from service.db_driver import DBControl
+from kompromat1.config.tor_config import TOR_PORT_CONFIG
+from kompromat1.service.db_driver import DBControl
 from kompromat1.parsers.tor_photos_parse import tor_links_crawler
 
 if __name__ == '__main__':
