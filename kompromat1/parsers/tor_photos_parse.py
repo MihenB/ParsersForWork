@@ -1,5 +1,6 @@
 import os
 import logging
+import threading
 from kompromat1.config.db_config import sql_requests_dict
 from kompromat1.config.request_config import headers
 from kompromat1.service.user_agent import ExtendedUserAgent
@@ -15,7 +16,9 @@ def tor_links_crawler(ids_with_links_list, db_driver, crawler_conf: dict):
     ua = ExtendedUserAgent()
     _headers = headers.copy()
 
-    logging.basicConfig(level=logging.INFO, filename="links_parse_logging.log", filemode="w",
+    logging.basicConfig(level=logging.INFO,
+                        filename=f"links_parse_{threading.current_thread().name}.log",
+                        filemode="w",
                         format="%(asctime)s %(levelname)s %(message)s")
     connection, cursor = db_driver.get_connection_from_pool()
 
