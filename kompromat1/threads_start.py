@@ -27,8 +27,8 @@ import random
 import threading
 import time
 from config.tor_config import TOR_PORT_CONFIG
-from db_driver import DBControl
-from tor_links_parse import tor_links_crawler
+from service.db_driver import DBControl
+from kompromat1.parsers.tor_articles_parse import tor_links_crawler
 
 if __name__ == '__main__':
     # Program starts from cor_alg!

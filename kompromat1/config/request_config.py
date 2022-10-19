@@ -6,7 +6,7 @@ cookies = {
 }
 
 headers = {
-    'authority': 'kompromat1.pro',
+    'authority': 'kompromat1',
     'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
     'accept-language': 'ru-RU,ru;q=0.9',
     'cache-control': 'no-cache',
