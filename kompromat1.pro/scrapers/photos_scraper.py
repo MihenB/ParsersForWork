@@ -5,6 +5,7 @@ import os
 from config.request_config import headers
 import logging
 from db_driver import DBControl
+import cfscrape
 
 main_path = '/news_photos'
 logging.basicConfig(level=logging.INFO, filename="links_parse_logging.log", filemode="w",
@@ -21,15 +22,16 @@ def format_list_to_dict(cursor):
 
 
 async def load_and_safe_picture(local_id, link_dict):
-    path = os.path.join(main_path, local_id)
+    path = os.path.join(main_path, str(local_id))
     try:
         os.mkdir(path)
     except FileExistsError:
         pass
     for num, link in enumerate(link_dict):
-        with open(os.path.join(path, str(num)), "wb") as file:
+        with open(f'{os.path.join(path, str(num))}.jpg', "wb") as file:
             try:
-                picture = requests.get(link, headers=headers)
+                session = cfscrape.create_scraper(requests.session())
+                picture = session.get(link, headers=headers)
             except Exception:
                 logging.exception(f'Link {link} is not available')
                 continue
