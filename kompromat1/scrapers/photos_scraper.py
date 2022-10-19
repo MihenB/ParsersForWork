@@ -19,7 +19,7 @@ def save_photo(local_id, cont, num):
         os.mkdir(path)
     except FileExistsError:
         pass
-    with open(f'{os.path.join(path, str(num))}.jpg', "wb") as file:
+    with open(f'{os.path.join(path, str(num))}', "wb") as file:
         file.write(cont)
     return path
 
