@@ -27,7 +27,7 @@ def save_photo(local_id, cont, num):
         pass
     with open(f'{os.path.join(path, str(num))}.jpg', "wb") as file:
         file.write(cont)
-    return f'{os.path.join(path, str(num))}.jpg'
+    return path
 
 
 def load_and_safe_picture(local_id, link_dict):
