@@ -6,8 +6,8 @@ from config.request_config import headers
 from crawler import TorCrawler
 from user_agent import ExtendedUserAgent
 from crawler import safe_crawler_rotate
-from links_scraper import get_info_from_site
-from correcting_algorithm_links import get_id_from_link
+from articles_scraper import get_info_from_site
+from correcting_algorithm_articles import get_id_from_link
 import logging
 
 
