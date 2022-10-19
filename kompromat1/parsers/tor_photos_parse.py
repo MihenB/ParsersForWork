@@ -43,6 +43,7 @@ def tor_links_crawler(ids_with_links_list, db_driver, crawler_conf: dict):
                     log_path = save_photo(local_id=current_id, cont=response.content, num=current_link_pos)
                     current_link_pos += 1
                     print(f'[INFO] Photo saved into {log_path}')
+                    time.sleep(random.random())
                 elif response.status_code in (403, 503):
                     print(f'[WARNING] Status code: {response.status_code}')
                     safe_crawler_rotate(crawler, headers=_headers, new_ua=ua.random_fresh_ua)
