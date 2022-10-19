@@ -2,7 +2,7 @@ import os
 from kompromat1.service.threads_start import parse_data
 from kompromat1.config.db_config import sql_requests_dict
 from kompromat1.service.db_driver import DBControl
-from correcting_algorithm_pages import _get_data_slices
+from kompromat1.cor_algs.correcting_algorithm_pages import _get_data_slices
 from kompromat1.scrapers.photos_scraper import main_path
 
 
