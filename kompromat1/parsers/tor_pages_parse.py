@@ -2,11 +2,10 @@ import random
 import time
 import mysql.connector
 from bs4 import BeautifulSoup
-from config.db_config import sql_requests_dict
-from config.request_config import headers, params, url
-from crawler import TorCrawler
-from user_agent import ExtendedUserAgent
-from crawler import safe_crawler_rotate
+from kompromat1.config.db_config import sql_requests_dict
+from kompromat1.config.request_config import headers, params, url
+from kompromat1.service.crawler import TorCrawler, safe_crawler_rotate
+from kompromat1.service.user_agent import ExtendedUserAgent
 
 
 def log_print(cur_num):
