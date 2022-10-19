@@ -26,10 +26,7 @@ def save_photo(local_id, cont, num):
     except FileExistsError:
         pass
     with open(f'{os.path.join(path, str(num))}.jpg', "wb") as file:
-        try:
-            file.write(cont)
-        except AttributeError:
-            logging.exception(f'Page content damaged')
+        file.write(cont)
     return f'{os.path.join(path, str(num))}.jpg'
 
 
