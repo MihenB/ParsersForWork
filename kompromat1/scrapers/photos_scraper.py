@@ -1,10 +1,8 @@
 import requests
 from config.db_config import sql_requests_dict
-import asyncio
 import os
 from config.request_config import headers
 import logging
-from db_driver import DBControl
 import cfscrape
 
 main_path = '/news_photos'
@@ -21,7 +19,21 @@ def format_list_to_dict(cursor):
     return result_dict
 
 
-async def load_and_safe_picture(local_id, link_dict):
+def save_photo(local_id, cont, num):
+    path = os.path.join(main_path, str(local_id))
+    try:
+        os.mkdir(path)
+    except FileExistsError:
+        pass
+    with open(f'{os.path.join(path, str(num))}.jpg', "wb") as file:
+        try:
+            file.write(cont)
+        except AttributeError:
+            logging.exception(f'Page content damaged')
+    return f'{os.path.join(path, str(num))}.jpg'
+
+
+def load_and_safe_picture(local_id, link_dict):
     path = os.path.join(main_path, str(local_id))
     try:
         os.mkdir(path)
@@ -42,22 +54,21 @@ async def load_and_safe_picture(local_id, link_dict):
     print(f'[INFO] file(s) has written to {path}')
 
 
-async def run_tasks(collected_dict):
-    tasks = [asyncio.create_task(load_and_safe_picture(key, val))
-             for key, val in collected_dict.items()]
-    await asyncio.gather(*tasks)
+def run_tasks(collected_dict):
+    pass
 
 
-def collect(cursor):
-    collected_dict = format_list_to_dict(cursor)
-    asyncio.run(run_tasks(collected_dict))
+# def collect(cursor):
+#     collected_dict = format_list_to_dict(cursor)
+#     asyncio.run(run_tasks(collected_dict))
 
 
 def main():
-    db_control = DBControl()
-    conn, cur = db_control.create_single_connection()
-    collect(cur)
-    db_control.close_single_connection()
+    # db_control = DBControl()
+    # conn, cur = db_control.create_single_connection()
+    # collect(cur)
+    # db_control.close_single_connection()
+    pass
 
 
 if __name__ == '__main__':
