@@ -1,4 +1,5 @@
 import mysql.connector
+import mysql.connector.pooling
 from kompromat1.config.db_config import db_config
 from kompromat1.config.tor_config import THREADS_COUNT
 
