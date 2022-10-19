@@ -1,13 +1,12 @@
 import random
 import time
 from bs4 import BeautifulSoup
-from config.db_config import sql_requests_dict
-from config.request_config import headers
-from crawler import TorCrawler
-from user_agent import ExtendedUserAgent
-from crawler import safe_crawler_rotate
-from articles_scraper import get_info_from_site
-from correcting_algorithm_articles import get_id_from_link
+from kompromat1.config.db_config import sql_requests_dict
+from kompromat1.config.request_config import headers
+from kompromat1.service.user_agent import ExtendedUserAgent
+from kompromat1.service.crawler import safe_crawler_rotate, TorCrawler
+from kompromat1.scrapers.articles_scraper import get_info_from_site
+from kompromat1.cor_algs.correcting_algorithm_articles import get_id_from_link
 import logging
 
 
