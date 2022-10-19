@@ -20,6 +20,7 @@ def tor_links_crawler(ids_with_links_list, db_driver, crawler_conf: dict):
                         filename=f"links_parse_{threading.current_thread().name}.log",
                         filemode="w",
                         format="%(asctime)s %(levelname)s %(message)s")
+
     connection, cursor = db_driver.get_connection_from_pool()
 
     for current_pos in range(len(ids_with_links_list)):
@@ -69,7 +70,7 @@ def tor_links_crawler(ids_with_links_list, db_driver, crawler_conf: dict):
         cursor.execute(sql_requests_dict['insert_id_and_photo_path'],
                        (
                            current_id,
-                           os.path.join(main_path, current_id)
+                           os.path.join(main_path, str(current_id))
                        ))
 
         if current_pos % commit_period == 1:
