@@ -1,15 +1,14 @@
 import requests
 import cfscrape
 import os
-import logging
 from kompromat1.config.db_config import sql_requests_dict
 from kompromat1.config.request_config import headers
 
 main_path = '/news_photos'
-logging.basicConfig(level=logging.INFO,
-                    filename="links_parse_logging.log",
-                    filemode="w",
-                    format="%(asctime)s %(levelname)s %(message)s")
+# logging.basicConfig(level=logging.INFO,
+#                     filename="links_parse_logging.log",
+#                     filemode="w",
+#                     format="%(asctime)s %(levelname)s %(message)s")
 
 
 def format_list_to_dict(cursor):
@@ -32,25 +31,25 @@ def save_photo(local_id, cont, num):
     return path
 
 
-def load_and_safe_picture(local_id, link_dict):
-    path = os.path.join(main_path, str(local_id))
-    try:
-        os.mkdir(path)
-    except FileExistsError:
-        pass
-    for num, link in enumerate(link_dict):
-        with open(f'{os.path.join(path, str(num))}.jpg', "wb") as file:
-            try:
-                session = cfscrape.create_scraper(requests.session())
-                picture = session.get(link, headers=headers)
-            except Exception:
-                logging.exception(f'Link {link} is not available')
-                continue
-            try:
-                file.write(picture.content)
-            except AttributeError:
-                logging.exception(f'Links {link} content damaged')
-    print(f'[INFO] file(s) has written to {path}')
+# def load_and_safe_picture(local_id, link_dict):
+#     path = os.path.join(main_path, str(local_id))
+#     try:
+#         os.mkdir(path)
+#     except FileExistsError:
+#         pass
+#     for num, link in enumerate(link_dict):
+#         with open(f'{os.path.join(path, str(num))}.jpg', "wb") as file:
+#             try:
+#                 session = cfscrape.create_scraper(requests.session())
+#                 picture = session.get(link, headers=headers)
+#             except Exception:
+#                 logging.exception(f'Link {link} is not available')
+#                 continue
+#             try:
+#                 file.write(picture.content)
+#             except AttributeError:
+#                 logging.exception(f'Links {link} content damaged')
+#     print(f'[INFO] file(s) has written to {path}')
 
 
 def main():
