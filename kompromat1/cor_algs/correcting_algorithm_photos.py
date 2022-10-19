@@ -18,7 +18,7 @@ def get_all_ids_and_links():
 def check_missing_data(show_list=False):
     all_ids_and_links = get_all_ids_and_links()
     collected_ids = list(map(int, os.listdir(main_path)))
-    missed_ids_with_links = [(i[0], i[1].split('|')[1::]) for i in all_ids_and_links if i[0] not in collected_ids]
+    missed_ids_with_links = [(i[0], i[1].split('|')[1::]) for i in all_ids_and_links if int(i[0]) not in collected_ids]
     # i[0] - id
     # i[1] - glued links of photos
     if show_list:

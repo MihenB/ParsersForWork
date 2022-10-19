@@ -17,7 +17,7 @@ sql_requests_dict = {
                                 (title, text, photo_path, tags, date, ID, photos_links) 
                                 VALUES (%s, %s, %s, %s, %s, %s, %s);""",
     'select_id_and_photo_links': """select id, photos_links from rucriminal.news;""",
-    'insert_id_and_photo_path': """insert into rucriminal.photos_paths
+    'insert_id_and_photo_path': """insert ignore into rucriminal.photos_paths
                                    (id, path)
                                    values (%s, %s);"""
 }
