@@ -1,6 +1,6 @@
 import mysql.connector
-from config.db_config import db_config
-from config.tor_config import THREADS_COUNT
+from kompromat1.config.db_config import db_config
+from kompromat1.config.tor_config import THREADS_COUNT
 
 
 class DBControl:

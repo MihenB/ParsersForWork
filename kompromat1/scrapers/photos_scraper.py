@@ -1,13 +1,15 @@
 import requests
-from config.db_config import sql_requests_dict
-import os
-from config.request_config import headers
-import logging
 import cfscrape
+import os
+import logging
+from kompromat1.config.db_config import sql_requests_dict
+from kompromat1.config.request_config import headers
 
 main_path = '/news_photos'
-logging.basicConfig(level=logging.INFO, filename="links_parse_logging.log", filemode="w",
-                        format="%(asctime)s %(levelname)s %(message)s")
+logging.basicConfig(level=logging.INFO,
+                    filename="links_parse_logging.log",
+                    filemode="w",
+                    format="%(asctime)s %(levelname)s %(message)s")
 
 
 def format_list_to_dict(cursor):
@@ -51,25 +53,9 @@ def load_and_safe_picture(local_id, link_dict):
     print(f'[INFO] file(s) has written to {path}')
 
 
-def run_tasks(collected_dict):
-    pass
-
-
-# def collect(cursor):
-#     collected_dict = format_list_to_dict(cursor)
-#     asyncio.run(run_tasks(collected_dict))
-
-
 def main():
-    # db_control = DBControl()
-    # conn, cur = db_control.create_single_connection()
-    # collect(cur)
-    # db_control.close_single_connection()
     pass
 
 
 if __name__ == '__main__':
     main()
-
-
-

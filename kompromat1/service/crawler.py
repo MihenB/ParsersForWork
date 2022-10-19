@@ -3,7 +3,6 @@ import requests
 import time
 import os
 import cfscrape
-from bs4 import BeautifulSoup
 from stem import Signal
 from stem.control import Controller
 from stem.connection import authenticate_none, authenticate_password

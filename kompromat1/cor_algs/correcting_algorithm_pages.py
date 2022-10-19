@@ -1,11 +1,11 @@
 import re
 import requests
 from bs4 import BeautifulSoup
-from kompromat1.threads_start import parse_data
+from kompromat1.service.threads_start import parse_data
+from kompromat1.service.db_driver import DBControl
 from kompromat1.config.tor_config import THREADS_COUNT
-from config.request_config import url, headers
-from config.db_config import sql_requests_dict
-from db_driver import DBControl
+from kompromat1.config.request_config import url, headers
+from kompromat1.config.db_config import sql_requests_dict
 
 
 def request_to_db():
