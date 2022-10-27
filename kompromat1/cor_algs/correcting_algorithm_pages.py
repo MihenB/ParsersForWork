@@ -22,7 +22,7 @@ def get_all_collected_pages_from_db(db_control):
 
 def _update_local_id(db_control):
     connection, cursor = db_control.create_single_connection()
-    cursor.execute(sql_requests_dict['get_max_page_from_table_links_with_pages'])
+    cursor.execute(sql_requests_dict['get_max_id_from_table_links_with_pages'])
     max_page = cursor.fetchall()[0][0]
     for i in range(1, max_page + 1):
         cursor.execute(sql_requests_dict['select_link_where_id_in_table_links_with_pages'], (i,))
