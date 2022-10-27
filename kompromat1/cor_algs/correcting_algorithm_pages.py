@@ -8,18 +8,43 @@ from kompromat1.config.request_config import url, headers
 from kompromat1.config.db_config import sql_requests_dict
 
 
-def request_to_db():
-    db_control = DBControl()
+def get_all_collected_pages_from_db(db_control):
     connection, cursor = db_control.create_single_connection()
     cursor.execute(sql_requests_dict['check_collected_pages'])
     parsed_nums = cursor.fetchall()
     parsed_nums = [i[0] for i in parsed_nums]
-    # db_control.close_single_connection()
+    db_control.close_single_connection()
     return parsed_nums
 
 
+def update_pages_in_db(last_page, db_control):
+    connection, cursor = db_control.create_single_connection()
+    cursor.execute(sql_requests_dict['update_pages_in_table_links_with_pages'],
+                   (last_page - int(cursor.execute(sql_requests_dict['get_max_page_from_table_links_with_pages'])))
+                   )
+    db_control.close_single_connection()
+
+
+def rename_entities():
+    pass
+
+
+def union_tables_from_different_web_sites():
+    pass
+
+
+def check_unique_id_tables_from_other_tables():
+    pass
+
+
+def solve_captcha(site_key=None):
+    pass
+
+
 def check_missing_data(last_page: int, show_list=False):
-    collected_keys = request_to_db()
+    db_control = DBControl()
+    update_pages_in_db(last_page=last_page, db_control=db_control)
+    collected_keys = get_all_collected_pages_from_db(db_control=db_control)
     left_pages = [i for i in range(1, last_page + 1) if i not in collected_keys]
     if show_list:
         print(f"The next pages haven't been collected: {left_pages}")
@@ -34,16 +59,21 @@ def _get_data_slices(len_broken_num):
     return boardings
 
 
-def _get_boardings():
+def _get_last_page():
     soup = BeautifulSoup(requests.get(url=url, headers=headers).text, 'lxml')
-    last_page = int(re.search(r'(\d+)', soup.find(class_='pagenate').text)[0])
+    return int(re.search(r'(\d+)', soup.find(class_='pagenate').text)[0])
+
+
+def _get_boardings():
+    last_page = _get_last_page()
     broken_nums = check_missing_data(last_page, show_list=True)
     data_slices = _get_data_slices(len(broken_nums))
     return [broken_nums[i:j] for i, j in data_slices]
 
 
 def parse_missed_data():
-    parse_data(boardings=_get_boardings())
+    print(_get_boardings())
+    # parse_data(boardings=_get_boardings())
 
 
 if __name__ == '__main__':

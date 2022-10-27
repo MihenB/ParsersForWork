@@ -19,5 +19,8 @@ sql_requests_dict = {
     'select_id_and_photo_links': """select id, photos_links from rucriminal.news;""",
     'insert_id_and_photo_path': """insert ignore into rucriminal.photos_paths
                                    (id, path)
-                                   values (%s, %s);"""
+                                   values (%s, %s);""",
+    'update_pages_in_table_links_with_pages': """update rucriminal.test
+                                                 set page_num = page_num + %s;""",
+    'get_max_page_from_table_links_with_pages': """select max(page_num) from rucriminal.test;"""
 }
