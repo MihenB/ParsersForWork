@@ -60,7 +60,7 @@ def _get_data_slices(len_broken_num):
 
 
 def _get_last_page():
-    proxies = {'https': 'https://MvfJp6:TwBmNs@212.81.38.234:9027'}
+    proxies = {'http': 'http://MvfJp6:TwBmNs@212.81.38.234:9027'}
     soup = BeautifulSoup(requests.get(url=url, headers=headers, proxies=proxies).text, 'lxml')
     return int(re.search(r'(\d+)', soup.find(class_='pagenate').text)[0])
 
