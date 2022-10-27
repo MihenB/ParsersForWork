@@ -26,5 +26,5 @@ sql_requests_dict = {
     'update_local_ids_in_table_links_with_pages': """update rucriminal.links_with_pages
                                                      set local_id = %s
                                                      where id = %s;""",
-    'select_link_where_id_in_table_links_with_pages': """select link from ructiminal.links_with_pages where id = %s;"""
+    'select_link_where_id_in_table_links_with_pages': """select link from rucriminal.links_with_pages where id = %s;"""
 }
