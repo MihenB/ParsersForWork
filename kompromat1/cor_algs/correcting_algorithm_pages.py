@@ -8,7 +8,7 @@ from kompromat1.config.tor_config import THREADS_COUNT
 from kompromat1.config.request_config import url, headers
 from kompromat1.config.db_config import sql_requests_dict
 from kompromat1.service.user_agent import ExtendedUserAgent
-from kompromat1.cor_algs.correcting_algorithm_articles import get_id_from_link
+# from kompromat1.cor_algs.correcting_algorithm_articles import get_id_from_link
 
 
 def get_all_collected_pages_from_db(db_control):
@@ -20,23 +20,23 @@ def get_all_collected_pages_from_db(db_control):
     return parsed_nums
 
 
-def _update_local_id(db_control):
-    connection, cursor = db_control.create_single_connection()
-    cursor.execute(sql_requests_dict['get_max_id_from_table_links_with_pages'])
-    max_page = cursor.fetchall()[0][0]
-    for i in range(1, max_page + 1):
-        cursor.execute(sql_requests_dict['select_link_where_id_in_table_links_with_pages'], (i,))
-        # print(f'Attempt #{i}')
-        try:
-            smth = cursor.fetchall()[0]
-            # print(smth)
-            link = smth[0]
-            # print(link)
-        except IndexError:
-            continue
-        cursor.execute(sql_requests_dict['update_local_ids_in_table_links_with_pages'],
-                       (get_id_from_link(link=link), i))
-    db_control.close_single_connection()
+# def _update_local_id(db_control):
+#     connection, cursor = db_control.create_single_connection()
+#     cursor.execute(sql_requests_dict['get_max_id_from_table_links_with_pages'])
+#     max_page = cursor.fetchall()[0][0]
+#     for i in range(1, max_page + 1):
+#         cursor.execute(sql_requests_dict['select_link_where_id_in_table_links_with_pages'], (i,))
+#         # print(f'Attempt #{i}')
+#         try:
+#             smth = cursor.fetchall()[0]
+#             # print(smth)
+#             link = smth[0]
+#             # print(link)
+#         except IndexError:
+#             continue
+#         cursor.execute(sql_requests_dict['update_local_ids_in_table_links_with_pages'],
+#                        (get_id_from_link(link=link), i))
+#     db_control.close_single_connection()
 
 
 def update_pages_in_db(last_page, db_control):
@@ -47,22 +47,6 @@ def update_pages_in_db(last_page, db_control):
                    (last_page - int(max_page),)
                    )
     db_control.close_single_connection()
-
-
-def rename_entities():
-    pass
-
-
-def union_tables_from_different_web_sites():
-    pass
-
-
-def check_unique_id_tables_from_other_tables():
-    pass
-
-
-def solve_captcha(site_key=None):
-    pass
 
 
 def check_missing_data(last_page: int, show_list=False):
