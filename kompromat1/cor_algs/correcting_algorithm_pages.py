@@ -21,8 +21,10 @@ def get_all_collected_pages_from_db(db_control):
 
 def update_pages_in_db(last_page, db_control):
     connection, cursor = db_control.create_single_connection()
+    cursor.execute(sql_requests_dict['get_max_page_from_table_links_with_pages'])
+    max_page = cursor.fetchall()[0][0]
     cursor.execute(sql_requests_dict['update_pages_in_table_links_with_pages'],
-                   (last_page - int(cursor.execute(sql_requests_dict['get_max_page_from_table_links_with_pages'])))
+                   (last_page - int(max_page))
                    )
     db_control.close_single_connection()
 
@@ -70,7 +72,6 @@ def _get_last_page():
     session.proxies = {'http': f'{ip_host}:{ip_port}',
                        'https': f'{ip_host}:{ip_port}'}
     soup = BeautifulSoup(session.get(url=url, headers=headers).text, 'lxml')
-    print(soup)
     return int(re.search(r'(\d+)', soup.find(class_='pagenate').text)[0])
 
 
