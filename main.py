@@ -1,4 +1,4 @@
-from kompromat1.cor_algs.correcting_algorithm_photos import parse_missed_data
+from kompromat1.cor_algs.correcting_algorithm_pages import parse_missed_data
 
 
 def main():
