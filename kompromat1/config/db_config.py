@@ -22,5 +22,9 @@ sql_requests_dict = {
                                    values (%s, %s);""",
     'update_pages_in_table_links_with_pages': """update rucriminal.test
                                                  set page_num = page_num + %s;""",
-    'get_max_page_from_table_links_with_pages': """select max(page_num) from rucriminal.test;"""
+    'get_max_page_from_table_links_with_pages': """select max(page_num) from rucriminal.test;""",
+    'update_local_ids_in_table_links_with_pages': """update rucriminal.links_with_pages
+                                                     set local_id = %s
+                                                     where id = %s;""",
+    'select_link_where_id_in_table_links_with_pages': """select link from ructiminal.links_with_pages where id = %s;"""
 }
