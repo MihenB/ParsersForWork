@@ -26,11 +26,14 @@ def _update_local_id(db_control):
     max_page = cursor.fetchall()[0][0]
     for i in range(1, max_page + 1):
         cursor.execute(sql_requests_dict['select_link_where_id_in_table_links_with_pages'], (i,))
-        print(f'Attempt #{i}')
-        smth = cursor.fetchall()[0]
-        print(smth)
-        link = smth[0]
-        print(link)
+        # print(f'Attempt #{i}')
+        try:
+            smth = cursor.fetchall()[0]
+            # print(smth)
+            link = smth[0]
+            # print(link)
+        except IndexError:
+            continue
         cursor.execute(sql_requests_dict['update_local_ids_in_table_links_with_pages'],
                        (get_id_from_link(link=link), i))
     db_control.close_single_connection()
