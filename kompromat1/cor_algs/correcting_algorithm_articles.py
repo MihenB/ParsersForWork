@@ -1,8 +1,8 @@
 import re
+from kompromat1.config.tor_config import THREADS_COUNT
 from kompromat1.service.threads_start import parse_data
 from kompromat1.config.db_config import sql_requests_dict
 from kompromat1.service.db_driver import DBControl
-from kompromat1.cor_algs.correcting_algorithm_pages import _get_data_slices
 
 
 def get_collected_and_all_ids():
@@ -14,6 +14,14 @@ def get_collected_and_all_ids():
     all_link_ids = [(get_id_from_link(i[0]), i[0]) for i in cursor.fetchall()]
     db_control.close_single_connection()
     return parsed_ids, all_link_ids
+
+
+def _get_data_slices(len_broken_num):
+    full_len = len_broken_num
+    len_broken_num //= THREADS_COUNT
+    boardings = [(len_broken_num * i, len_broken_num * (i + 1)) for i in range(THREADS_COUNT - 1)]
+    boardings.append((len_broken_num * (THREADS_COUNT - 1), full_len))
+    return boardings
 
 
 def get_id_from_link(link):
