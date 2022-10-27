@@ -68,7 +68,7 @@ def solve_captcha(site_key=None):
 def check_missing_data(last_page: int, show_list=False):
     db_control = DBControl()
     update_pages_in_db(last_page=last_page, db_control=db_control)
-    _update_local_id(db_control=db_control)
+    # _update_local_id(db_control=db_control)
     collected_keys = get_all_collected_pages_from_db(db_control=db_control)
     left_pages = [i for i in range(1, last_page + 1) if i not in collected_keys]
     if show_list:
@@ -104,8 +104,8 @@ def _get_boardings():
 
 
 def parse_missed_data():
-    print(_get_boardings())
-    # parse_data(boardings=_get_boardings())
+    # print(_get_boardings())
+    parse_data(boardings=_get_boardings())
 
 
 if __name__ == '__main__':
