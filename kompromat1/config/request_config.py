@@ -11,7 +11,7 @@ headers = {
     'accept-language': 'ru-RU,ru;q=0.9',
     'cache-control': 'no-cache',
     'pragma': 'no-cache',
-    'referer': 'https://kompromat1.pro/articles',
+    # 'referer': 'https://kompromat1.pro/articles',
     'sec-ch-ua': '"Google Chrome";v="105", "Not)A;Brand";v="8", "Chromium";v="105"',
     'sec-ch-ua-mobile': '?0',
     'sec-ch-ua-platform': '"Windows"',

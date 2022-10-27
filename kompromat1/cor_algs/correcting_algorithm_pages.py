@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 from kompromat1.service.threads_start import parse_data
 from kompromat1.service.db_driver import DBControl
 from kompromat1.config.tor_config import THREADS_COUNT
-from kompromat1.config.request_config import url, headers, cookies
+from kompromat1.config.request_config import url, headers
 from kompromat1.config.db_config import sql_requests_dict
 import cfscrape
 from kompromat1.service.user_agent import ExtendedUserAgent
@@ -62,11 +62,14 @@ def _get_data_slices(len_broken_num):
 
 
 def _get_last_page():
-    # proxies = {'http': 'http://MvfJp6:TwBmNs@212.81.38.234:9027'}
     ua = ExtendedUserAgent()
     headers.update({'user-agent': ua.random_fresh_ua})
     session = cfscrape.create_scraper(sess=requests.Session())
-    soup = BeautifulSoup(session.get(url=url, headers=headers, cookies=cookies).text, 'lxml')
+    ip_host = '5.9.244.198'
+    ip_port = '10259'
+    session.proxies = {'http': f'{ip_host}:{ip_port}',
+                       'https': f'{ip_host}:{ip_port}'}
+    soup = BeautifulSoup(session.get(url=url, headers=headers).text, 'lxml')
     print(soup)
     return int(re.search(r'(\d+)', soup.find(class_='pagenate').text)[0])
 
