@@ -24,7 +24,7 @@ def update_pages_in_db(last_page, db_control):
     cursor.execute(sql_requests_dict['get_max_page_from_table_links_with_pages'])
     max_page = cursor.fetchall()[0][0]
     cursor.execute(sql_requests_dict['update_pages_in_table_links_with_pages'],
-                   (last_page - int(max_page))
+                   (last_page - int(max_page),)
                    )
     db_control.close_single_connection()
 
